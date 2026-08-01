@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Resources | AspireAI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/resources.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top-nav">
+
+    <a href="{{ url_for('dashboard.dashboard') }}" class="dashboard-btn">
+        ← Dashboard
+    </a>
+
+</div>
+
+    <header>
+
+        <h1>📚 Learning Resources</h1>
+
+        <p>Choose a programming language to explore the best learning resources.</p>
+
+    </header>
+
+    <div class="top-section">
+
+        <input
+            type="text"
+            id="searchBox"
+            placeholder="Search resource...">
+
+        <select id="topicSelect">
+
+            <option value="python">🐍 Python</option>
+
+            <option value="java">☕ Java</option>
+
+            <option value="cpp">💻 C++</option>
+
+        </select>
+
+    </div>
+
+    <!-- VIDEOS -->
+
+    <section>
+
+        <h2>🎥 Videos</h2>
+
+        <div class="cards" id="videos">
+
+        </div>
+
+    </section>
+
+    <!-- ARTICLES -->
+
+    <section>
+
+        <h2>📄 Articles</h2>
+
+        <div class="cards" id="articles">
+
+        </div>
+
+    </section>
+
+    <!-- PRACTICE -->
+
+    <section>
+
+        <h2>💻 Practice</h2>
+
+        <div class="cards" id="practice">
+
+        </div>
+
+    </section>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/resources.js') }}"></script>
+
+</body>
+
+</html>

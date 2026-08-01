@@ -232,6 +232,110 @@ def init_db():
             )
 
         ])
+        
+        # Create Resources Table
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS resources (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        category TEXT NOT NULL,
+        level TEXT NOT NULL,
+        platform TEXT NOT NULL,
+        url TEXT NOT NULL,
+        description TEXT
+    )
+''')
+    
+    # ---------------- INSERT SAMPLE RESOURCES ----------------
+
+    cursor.execute("SELECT COUNT(*) FROM resources")
+
+    count = cursor.fetchone()[0]
+
+    if count == 0:
+
+     cursor.executemany("""
+
+    INSERT INTO resources
+    (title, category, level, platform, url, description)
+
+    VALUES (?, ?, ?, ?, ?, ?)
+
+    """, [
+
+        (
+            "Python Crash Course",
+            "Python",
+            "Beginner",
+            "YouTube",
+            "https://www.youtube.com/results?search_query=python+crash+course",
+            "Complete Python course for beginners."
+        ),
+
+        (
+            "Flask Official Documentation",
+            "Flask",
+            "Intermediate",
+            "Documentation",
+            "https://flask.palletsprojects.com/",
+            "Official Flask documentation."
+        ),
+
+        (
+            "SQL Tutorial",
+            "SQL",
+            "Beginner",
+            "W3Schools",
+            "https://www.w3schools.com/sql/",
+            "Learn SQL from scratch."
+        ),
+
+        (
+            "Git & GitHub",
+            "Git",
+            "Beginner",
+            "YouTube",
+            "https://www.youtube.com/results?search_query=git+github+tutorial",
+            "Version control using Git."
+        ),
+
+        (
+            "Data Structures & Algorithms",
+            "DSA",
+            "Intermediate",
+            "GeeksforGeeks",
+            "https://www.geeksforgeeks.org/data-structures/",
+            "Master DSA concepts."
+        ),
+
+        (
+            "Machine Learning",
+            "AI",
+            "Intermediate",
+            "Coursera",
+            "https://www.coursera.org/learn/machine-learning",
+            "Andrew Ng's ML course."
+        ),
+
+        (
+            "HTML & CSS",
+            "Web Development",
+            "Beginner",
+            "MDN",
+            "https://developer.mozilla.org/",
+            "Learn HTML and CSS."
+        ),
+
+        (
+            "JavaScript Guide",
+            "JavaScript",
+            "Beginner",
+            "MDN",
+            "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+            "Official JavaScript guide."
+        )
+
+    ])
 
     conn.commit()
 

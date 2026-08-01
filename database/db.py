@@ -3,8 +3,8 @@ import os
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "aspire_ai.db")
 
-
 def get_db_connection():
+    print("DATABASE PATH:", os.path.abspath(DB_PATH))
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
@@ -20,34 +20,27 @@ def init_db():
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS users(
-
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        name TEXT,
-
-        email TEXT UNIQUE,
-
-        password TEXT
-
-    )
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)
     """)
 
     # ---------------- PROFILE ----------------
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS profiles(
-
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-
-        user_id INTEGER,
-
-        career_goal TEXT,
-
-        current_skill TEXT,
-
-        learning_time TEXT
-
-    )
+    CREATE TABLE IF NOT EXISTS profiles (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
+    career_goal TEXT,
+    skill_level TEXT,
+    interests TEXT,
+    daily_available_time TEXT,
+    learning_style TEXT,
+    FOREIGN KEY (user_id) REFERENCES users(id)
+)
     """)
 
     # ---------------- ROADMAP ----------------
@@ -127,6 +120,10 @@ def init_db():
 
     )
     """)
+    
+    # ---------------- RESOURCES ----------------
+
+   
 
     conn.commit()
 

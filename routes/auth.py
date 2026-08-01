@@ -53,8 +53,9 @@ def signup():
             flash('Account created successfully! Please log in.', 'success')
             return redirect(url_for('auth.login'))
         except Exception as e:
-            conn.rollback()
-            flash('Email already registered or error creating account.', 'danger')
+          conn.rollback()
+          print("Signup Error:", e)
+          flash(str(e), "danger")
         finally:
             conn.close()
 

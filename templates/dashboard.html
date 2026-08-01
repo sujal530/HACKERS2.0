@@ -19,7 +19,12 @@
             <li><a href="{{ url_for('dashboard.dashboard') }}" class="active">Dashboard</a></li>
             <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
             <li><a href="{{ url_for('roadmap.view_roadmap') }}">Roadmap</a></li>
-           <li><a href="#">Resources</a></li>
+           
+   <li>
+    <a href="{{ url_for('resources.resources') }}">
+        Resources
+    </a>
+</li>
             <li>
     <a href="{{ url_for('challenges.challenges') }}">
         Challenges

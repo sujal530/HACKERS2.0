@@ -9,6 +9,7 @@ from routes.roadmap import roadmap_bp
 from routes.mentor import mentor_bp
 from routes.ai import ai_bp
 from routes.challenges import challenges_bp
+from routes.resources import resources_bp
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -25,6 +26,8 @@ app.register_blueprint(roadmap_bp, url_prefix="/roadmap")
 app.register_blueprint(mentor_bp)
 app.register_blueprint(ai_bp)
 app.register_blueprint(challenges_bp)
+app.register_blueprint(resources_bp)
+
 
 # Home Route
 @app.route("/")
