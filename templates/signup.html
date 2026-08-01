@@ -4,79 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - AspireAI</title>
-    <!-- CSS Dependencies -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 </head>
 <body>
-
     <div class="auth-container">
-        <div class="auth-card">
-            <div class="auth-header">
-                <h2>Join AspireAI</h2>
-                <p>Start building your future self today</p>
+        <h2>Create AspireAI Account</h2>
+        
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form action="{{ url_for('auth.signup') }}" method="POST">
+            <div>
+                <label>Full Name:</label>
+                <input type="text" name="name" required>
             </div>
-
-            <!-- Flash messages display -->
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    <div class="flash-messages">
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}">{{ message }}</div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            {% endwith %}
-
-            <!-- Signup Form -->
-            <form action="{{ url_for('signup') }}" method="POST" id="signupForm">
-                <div class="form-group">
-                    <label for="full_name">Full Name</label>
-                    <input 
-                        type="text" 
-                        id="full_name" 
-                        name="full_name" 
-                        placeholder="Enter your full name" 
-                        required 
-                        autocomplete="name"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        name="email" 
-                        placeholder="Enter your email" 
-                        required 
-                        autocomplete="email"
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <input 
-                        type="password" 
-                        id="password" 
-                        name="password" 
-                        placeholder="Create a password" 
-                        required 
-                        autocomplete="new-password"
-                    >
-                </div>
-
-                <button type="submit" class="btn-primary btn-block">Create Account</button>
-            </form>
-
-            <div class="auth-footer">
-                <p>Already have an account? <a href="{{ url_for('login') }}">Log in here</a></p>
+            <div>
+                <label>Email:</label>
+                <input type="email" name="email" required>
             </div>
-        </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" required>
+            </div>
+            <button type="submit">Sign Up</button>
+        </form>
+        <p>Already have an account? <a href="{{ url_for('auth.login') }}">Log In</a></p>
     </div>
-
-    <!-- JS Dependencies -->
-    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
 </html>

@@ -13,16 +13,16 @@
     <!-- Main Navigation Bar -->
     <nav class="navbar">
         <div class="nav-brand">
-            <a href="{{ url_for('dashboard') }}">AspireAI</a>
+            <a href="{{ url_for('dashboard.dashboard') }}">AspireAI</a>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ url_for('profile') }}" class="active">Profile</a></li>
-            <li><a href="{{ url_for('roadmap') }}">Roadmap</a></li>
-            <li><a href="{{ url_for('resources') }}">Resources</a></li>
-            <li><a href="{{ url_for('challenge') }}">Challenges</a></li>
-            <li><a href="{{ url_for('mentor') }}">AI Mentor</a></li>
-            <li><a href="{{ url_for('logout') }}" class="btn-logout">Logout</a></li>
+            <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}" class="active">Profile</a></li>
+            <li><a href="{{ url_for('roadmap.view_roadmap') }}">Roadmap</a></li>
+            <li><a href="{{ url_for('resources.resources') if 'resources' in config.get('BLUEPRINTS', {}) else '#' }}">Resources</a></li>
+            <li><a href="{{ url_for('challenge.challenge') if 'challenge' in config.get('BLUEPRINTS', {}) else '#' }}">Challenges</a></li>
+            <li><a href="{{ url_for('mentor.mentor') if 'mentor' in config.get('BLUEPRINTS', {}) else '#' }}">AI Mentor</a></li>
+            <li><a href="{{ url_for('auth.logout') }}" class="btn-logout">Logout</a></li>
         </ul>
     </nav>
 
@@ -46,7 +46,7 @@
         {% endwith %}
 
         <div class="profile-card">
-            <form action="{{ url_for('profile') }}" method="POST" id="profileForm">
+            <form action="{{ url_for('profile.view_profile') }}" method="POST" id="profileForm">
                 
                 <!-- Career Goal -->
                 <div class="form-group">

@@ -1,35 +1,41 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize common layout functionality
-    initFlashMessageDismissal();
-    highlightActiveNavLink();
-});
+    // -------------------------------------------------------------
+    // 1. Auth Form Handling (Login & Signup)
+    // -------------------------------------------------------------
+    const authForm = document.querySelector('#authForm');
+    const submitBtn = document.querySelector('#submitBtn');
 
-/**
- * Handles automatic and manual dismissal of alert flash messages across pages.
- */
-function initFlashMessageDismissal() {
-    const alerts = document.querySelectorAll('.alert');
-    alerts.forEach((alert) => {
-        // Auto-dismiss flash messages after 5 seconds
+    if (authForm) {
+        authForm.addEventListener('submit', (event) => {
+            const emailInput = document.querySelector('input[name="email"]');
+            const passwordInput = document.querySelector('input[name="password"]');
+
+            // Client-side quick check
+            if (!emailInput.value.trim() || !passwordInput.value.trim()) {
+                event.preventDefault(); // Stop form submission if empty
+                alert('Please fill in both email and password.');
+                return;
+            }
+
+            // Optional: Disable button on submit to prevent double-clicks during server delay
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerText = 'Logging in...';
+            }
+        });
+    }
+
+    // -------------------------------------------------------------
+    // 2. Auto-hide Flash Messages after 4 seconds
+    // -------------------------------------------------------------
+    const flashMessages = document.querySelectorAll('.flash-message');
+    if (flashMessages.length > 0) {
         setTimeout(() => {
-            alert.style.opacity = '0';
-            alert.style.transition = 'opacity 0.5s ease';
-            setTimeout(() => alert.remove(), 500);
-        }, 5000);
-    });
-}
-
-/**
- * Highlights the current active navigation link based on window location.
- */
-function highlightActiveNavLink() {
-    const currentPath = window.location.pathname;
-    const navLinks = document.querySelectorAll('.nav-links a');
-
-    navLinks.forEach((link) => {
-        const linkPath = link.getAttribute('href');
-        if (linkPath === currentPath) {
-            link.classList.add('active');
-        }
-    });
-}
+            flashMessages.forEach((msg) => {
+                msg.style.transition = 'opacity 0.5s ease';
+                msg.style.opacity = '0';
+                setTimeout(() => msg.remove(), 500);
+            });
+        }, 4000);
+    }
+});

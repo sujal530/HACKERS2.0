@@ -10,15 +10,14 @@ def dashboard():
 
     user_id = session["user_id"]
     conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
+    cursor = conn.cursor()
 
-    cursor.execute("SELECT * FROM progress WHERE user_id = %s", (user_id,))
+    cursor.execute("SELECT * FROM progress WHERE user_id = ?", (user_id,))
     progress_data = cursor.fetchone()
 
-    cursor.execute("SELECT * FROM roadmaps WHERE user_id = %s AND status = 'active' ORDER BY id DESC LIMIT 1", (user_id,))
+    cursor.execute("SELECT * FROM roadmaps WHERE user_id = ? AND status = 'active' ORDER BY id DESC LIMIT 1", (user_id,))
     roadmap_data = cursor.fetchone()
 
-    cursor.close()
     conn.close()
 
     dashboard_data = {
@@ -27,4 +26,10 @@ def dashboard():
         "roadmap_title": roadmap_data['roadmap_title'] if roadmap_data else "No Active Roadmap"
     }
 
-    return render_template('dashboard.html', dashboard_data=dashboard_data)
+    # Pass user details from session
+    current_user = {
+        'id': session.get('user_id'),
+        'name': session.get('user_name', 'User')
+    }
+
+    return render_template('dashboard.html', dashboard_data=dashboard_data, current_user=current_user)

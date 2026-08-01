@@ -1,35 +1,9 @@
-import mysql.connector
-from mysql.connector import Error
+import sqlite3
+import os
 
-from config import Config
-
+DB_PATH = os.path.join(os.path.dirname(__file__), 'aspire_ai.db')
 
 def get_db_connection():
-    """
-    Returns a MySQL database connection.
-    """
-
-    try:
-        connection = mysql.connector.connect(
-            host=Config.DB_HOST,
-            port=Config.DB_PORT,
-            user=Config.DB_USER,
-            password=Config.DB_PASSWORD,
-            database=Config.DB_NAME,
-            autocommit=True
-        )
-
-        return connection
-
-    except Error as error:
-        print(f"Database Connection Error: {error}")
-        return None
-
-
-def close_db_connection(connection):
-    """
-    Safely closes the database connection.
-    """
-
-    if connection is not None and connection.is_connected():
-        connection.close()
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row  # Enables dict-like column access
+    return conn

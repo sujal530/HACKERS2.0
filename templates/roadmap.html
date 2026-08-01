@@ -13,16 +13,16 @@
     <!-- Main Navigation Bar -->
     <nav class="navbar">
         <div class="nav-brand">
-            <a href="{{ url_for('dashboard') }}">AspireAI</a>
+            <a href="{{ url_for('dashboard.dashboard') }}">AspireAI</a>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
-            <li><a href="{{ url_for('roadmap') }}" class="active">Roadmap</a></li>
-            <li><a href="{{ url_for('resources') }}">Resources</a></li>
-            <li><a href="{{ url_for('challenge') }}">Challenges</a></li>
-            <li><a href="{{ url_for('mentor') }}">AI Mentor</a></li>
-            <li><a href="{{ url_for('logout') }}" class="btn-logout">Logout</a></li>
+            <li><a href="{{ url_for('dashboard.dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('roadmap.view_roadmap') }}" class="active">Roadmap</a></li>
+            <li><a href="{{ url_for('resources.resources') if 'resources' in config.get('BLUEPRINTS', {}) else '#' }}">Resources</a></li>
+            <li><a href="{{ url_for('challenge.challenge') if 'challenge' in config.get('BLUEPRINTS', {}) else '#' }}">Challenges</a></li>
+            <li><a href="{{ url_for('mentor.mentor') if 'mentor' in config.get('BLUEPRINTS', {}) else '#' }}">AI Mentor</a></li>
+            <li><a href="{{ url_for('auth.logout') }}" class="btn-logout">Logout</a></li>
         </ul>
     </nav>
 
@@ -30,7 +30,7 @@
     <main class="roadmap-container">
         
         <header class="roadmap-header">
-            <h1 id="roadmap-title">{{ roadmap_data.get('roadmap_title', 'Your Personalized AI Roadmap') }}</h1>
+            <h1 id="roadmap-title">{{ roadmap_data.get('roadmap_title', 'Your Personalized AI Roadmap') if roadmap_data else 'Your Personalized AI Roadmap' }}</h1>
             <p class="subtitle">Step-by-step adaptive path tailored to your goals and learning speed.</p>
         </header>
 
@@ -49,15 +49,15 @@
         <div class="roadmap-meta-card">
             <div class="meta-item">
                 <span>Career Goal:</span>
-                <strong id="career-goal">{{ profile_data.get('career_goal', 'Not set') }}</strong>
+                <strong id="career-goal">{{ profile_data.get('career_goal', 'Not set') if profile_data else 'Not set' }}</strong>
             </div>
             <div class="meta-item">
                 <span>Skill Level:</span>
-                <strong id="skill-level">{{ profile_data.get('skill_level', 'Beginner') }}</strong>
+                <strong id="skill-level">{{ profile_data.get('skill_level', 'Beginner') if profile_data else 'Beginner' }}</strong>
             </div>
             <div class="meta-item">
                 <span>Daily Commitment:</span>
-                <strong id="daily-available-time">{{ profile_data.get('daily_available_time', '1') }} Hours/day</strong>
+                <strong id="daily-available-time">{{ profile_data.get('daily_available_time', '1') if profile_data else '1' }} Hours/day</strong>
             </div>
         </div>
 
@@ -80,7 +80,7 @@
             {% else %}
                 <div class="empty-roadmap">
                     <p>No roadmap generated yet. Complete your profile to generate your customized AI growth path!</p>
-                    <a href="{{ url_for('profile') }}" class="btn-primary">Update Profile</a>
+                    <a href="{{ url_for('profile.view_profile') }}" class="btn-primary">Update Profile</a>
                 </div>
             {% endif %}
         </section>

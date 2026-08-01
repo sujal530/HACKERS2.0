@@ -2,6 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <title>Dashboard - AspireAI</title>
+</head>
+<body>
+    
+    <h1>Welcome, {{ session.get('user_name', 'User') }}!</h1>
+    <nav>
+        <a href="{{ url_for('profile.view_profile') }}">Profile</a> |
+        <a href="{{ url_for('roadmap.view_roadmap') }}">Roadmap</a> |
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+    </nav>
+    <p>This is your AspireAI Growth Dashboard.</p>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - AspireAI</title>
     <!-- CSS Dependencies -->
@@ -13,86 +29,52 @@
     <!-- Main Navigation Bar -->
     <nav class="navbar">
         <div class="nav-brand">
-            <a href="{{ url_for('dashboard') }}">AspireAI</a>
+            <a href="{{ url_for('dashboard.dashboard') }}">AspireAI</a>
         </div>
         <ul class="nav-links">
-            <li><a href="{{ url_for('dashboard') }}" class="active">Dashboard</a></li>
-            <li><a href="{{ url_for('profile') }}">Profile</a></li>
-            <li><a href="{{ url_for('roadmap') }}">Roadmap</a></li>
-            <li><a href="{{ url_for('resources') }}">Resources</a></li>
-            <li><a href="{{ url_for('challenge') }}">Challenges</a></li>
-            <li><a href="{{ url_for('mentor') }}">AI Mentor</a></li>
-            <li><a href="{{ url_for('logout') }}" class="btn-logout">Logout</a></li>
+            <li><a href="{{ url_for('dashboard.dashboard') }}" class="active">Dashboard</a></li>
+            <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
+            <li><a href="{{ url_for('roadmap.view_roadmap') }}">Roadmap</a></li>
+            <li><a href="{{ url_for('resources.resources') if 'resources' in config.get('BLUEPRINTS', {}) else '#' }}">Resources</a></li>
+            <li><a href="{{ url_for('challenge.challenge') if 'challenge' in config.get('BLUEPRINTS', {}) else '#' }}">Challenges</a></li>
+            <li><a href="{{ url_for('mentor.mentor') if 'mentor' in config.get('BLUEPRINTS', {}) else '#' }}">AI Mentor</a></li>
+            <li><a href="{{ url_for('auth.logout') }}" class="btn-logout">Logout</a></li>
         </ul>
     </nav>
 
     <!-- Main Content Container -->
     <main class="dashboard-container">
         
-        <!-- Welcome Header -->
         <header class="dashboard-header">
-            <h1>Welcome back, <span id="user-name">{{ session.get('user_name', 'Growth Seeker') }}</span>!</h1>
-            <p class="subtitle">Track your progress, manage your roadmap, and achieve your future self.</p>
+            <h1>Welcome, {{ session.get('user_name', 'User') }}!</h1>
+            <p class="subtitle">This is your AspireAI Growth Dashboard.</p>
         </header>
 
-        <!-- Metrics & Stats Overview -->
-        <section class="dashboard-stats">
-            <div class="stat-card">
-                <h3>Overall Progress</h3>
-                <p class="stat-value"><span id="progress-percentage">{{ dashboard_data.get('progress_percentage', 0) }}</span>%</p>
-            </div>
-            <div class="stat-card">
-                <h3>Learning Streak</h3>
-                <p class="stat-value"><span id="learning-streak">{{ dashboard_data.get('learning_streak', 0) }}</span> Days 🔥</p>
-            </div>
-            <div class="stat-card">
-                <h3>Career Goal</h3>
-                <p class="stat-text" id="career-goal">{{ profile_data.get('career_goal', 'Not set yet') }}</p>
-            </div>
-            <div class="stat-card">
-                <h3>Current Stage</h3>
-                <p class="stat-text" id="current-stage">{{ profile_data.get('current_stage', 'Getting Started') }}</p>
-            </div>
-        </section>
+        <!-- Flash messages display -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
 
-        <!-- Active Roadmap Overview Section -->
-        <section class="dashboard-section roadmap-preview">
-            <div class="section-header">
-                <h2>Active Roadmap</h2>
-                <a href="{{ url_for('roadmap') }}" class="btn-secondary">View Full Roadmap</a>
-            </div>
-            <div class="card-content">
-                <h3 id="roadmap-title">{{ roadmap_data.get('roadmap_title', 'No Active Roadmap Generated') }}</h3>
-                <p class="current-topic-label">Current Topic Focus: <strong id="current-topic">{{ dashboard_data.get('current_topic', 'N/A') }}</strong></p>
-            </div>
-        </section>
-
-        <!-- Quick Actions Grid -->
-        <section class="dashboard-grid">
-            
-            <!-- Daily Challenge Widget -->
-            <div class="dashboard-card challenge-widget">
-                <h3>Today's Challenge</h3>
-                <h4 id="challenge-title">{{ challenge_data.get('challenge_title', 'No active challenge') }}</h4>
-                <p class="status-badge">Status: <span id="challenge-status">{{ challenge_data.get('challenge_status', 'Pending') }}</span></p>
-                <a href="{{ url_for('challenge') }}" class="btn-primary">Go to Challenges</a>
+        <!-- Quick Access Cards -->
+        <div class="dashboard-grid">
+            <div class="dashboard-card">
+                <h3>Growth Profile</h3>
+                <p>Update your career goals, skill level, and available learning time.</p>
+                <a href="{{ url_for('profile.view_profile') }}" class="btn-primary">View Profile</a>
             </div>
 
-            <!-- Resource Curator Widget -->
-            <div class="dashboard-card resource-widget">
-                <h3>Recommended Resources</h3>
-                <p>Access curated links for YouTube, Docs, GitHub, and Books tailored to your skill level.</p>
-                <a href="{{ url_for('resources') }}" class="btn-primary">Explore Resources</a>
+            <div class="dashboard-card">
+                <h3>Adaptive Roadmap</h3>
+                <p>Track your personalized step-by-step learning progression.</p>
+                <a href="{{ url_for('roadmap.view_roadmap') }}" class="btn-primary">View Roadmap</a>
             </div>
-
-            <!-- AI Mentor Widget -->
-            <div class="dashboard-card mentor-widget">
-                <h3>AI Mentor</h3>
-                <p>Have questions about your roadmap or stuck on a concept? Chat with your AI Growth Companion.</p>
-                <a href="{{ url_for('mentor') }}" class="btn-primary">Start Chat</a>
-            </div>
-
-        </section>
+        </div>
 
     </main>
 
