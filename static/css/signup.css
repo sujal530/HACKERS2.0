@@ -1,23 +1,29 @@
 /* ============================================================
-   PREMIUM LOGIN PAGE STYLESHEET — AspireAI
+   PREMIUM SIGN UP PAGE STYLESHEET — AspireAI
    Light, Airy, Professional SaaS Theme
-   (Stripe / Linear / Notion light-mode inspired)
+   Deliberately DIFFERENT structure from the login page:
+   a split "brand panel + form panel" card instead of a
+   single centered box, with a teal/emerald + amber accent
+   (login uses indigo/pink) so the two pages feel related
+   but distinct.
    ------------------------------------------------------------
    Matched exactly to the provided HTML structure:
 
    body
-     .auth-container          <- the glass card itself
-       h2                     <- "Login to AspireAI"
-       .flash-message         <- has inline style, overridden below
-       form#authForm
-         div                  <- unclassed field wrapper
-           label[for]
-           input[type=email | password]
-         button#submitBtn
-       p                      <- footer text
-         a                    <- "Sign Up" link
+     .auth-container                 <- split-panel card
+       h2                            <- "Create AspireAI Account"
+       p (repeated, before form)     <- flash messages, inline
+                                         style="color:red" overridden
+       form
+         div                         <- unclassed field wrapper (x3)
+           label (no `for`)
+           input[type=text|email|password]
+         button[type=submit]         <- no id, styled by type+context
+       p (after form)                <- "Already have an account?"
+         a                           <- "Log In" link
 
    No new classes/wrappers required — drops straight in.
+   Remember to add the <link rel="stylesheet"> tag in <head>.
    ============================================================ */
 
 
@@ -25,43 +31,50 @@
    1. CSS VARIABLES
    ============================================================ */
 :root {
-  /* Brand / Accent Colors */
-  --color-primary: #6366f1;
-  --color-primary-dark: #4f46e5;
-  --color-primary-light: #a5b4fc;
-  --color-accent: #ec4899;
-  --color-accent-2: #06b6d4;
+  /* Brand / Accent Colors — teal/emerald + amber (distinct from login) */
+  --color-primary: #0d9488;
+  --color-primary-dark: #0f766e;
+  --color-primary-light: #5eead4;
+  --color-accent: #f59e0b;
+  --color-accent-2: #f43f5e;
 
   /* Light, airy background */
   --gradient-bg:
-    radial-gradient(circle at 15% 10%, rgba(199, 210, 254, 0.55) 0%, transparent 42%),
-    radial-gradient(circle at 85% 15%, rgba(252, 231, 243, 0.6) 0%, transparent 45%),
-    radial-gradient(circle at 50% 100%, rgba(207, 250, 254, 0.55) 0%, transparent 50%),
-    linear-gradient(160deg, #f8fafc 0%, #eef2ff 50%, #f5f3ff 100%);
+    radial-gradient(circle at 12% 8%, rgba(153, 246, 228, 0.5) 0%, transparent 42%),
+    radial-gradient(circle at 88% 12%, rgba(254, 240, 138, 0.45) 0%, transparent 45%),
+    radial-gradient(circle at 50% 100%, rgba(253, 224, 220, 0.45) 0%, transparent 50%),
+    linear-gradient(160deg, #f8fafc 0%, #ecfdf5 50%, #f0fdfa 100%);
 
-  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 55%, #ec4899 100%);
-  --gradient-primary-hover: linear-gradient(135deg, #4f46e5 0%, #7c3aed 55%, #db2777 100%);
+  --gradient-primary: linear-gradient(135deg, #0d9488 0%, #14b8a6 55%, #f59e0b 100%);
+  --gradient-primary-hover: linear-gradient(135deg, #0f766e 0%, #0d9488 55%, #d97706 100%);
+
+  /* Brand panel gradient — the decorative "different structure" side */
+  --gradient-panel:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(255, 255, 255, 0.12) 0%, transparent 45%),
+    linear-gradient(150deg, #0f766e 0%, #0d9488 45%, #14b8a6 75%, #f59e0b 130%);
+
   --gradient-border: conic-gradient(
     from var(--angle, 0deg),
-    #a5b4fc,
-    #f5d0fe,
     #99f6e4,
-    #c4b5fd,
-    #a5b4fc
+    #fde68a,
+    #fecdd3,
+    #5eead4,
+    #99f6e4
   );
 
   /* Neutrals */
   --color-white: #ffffff;
-  --color-text-primary: #1e1b4b;
-  --color-text-secondary: #64748b;
-  --color-text-muted: #94a3b8;
-  --color-border: rgba(99, 102, 241, 0.14);
-  --color-border-focus: #6366f1;
+  --color-text-primary: #0f2f2b;
+  --color-text-secondary: #5b6b68;
+  --color-text-muted: #94a3a1;
+  --color-border: rgba(13, 148, 136, 0.16);
+  --color-border-focus: #0d9488;
 
-  /* Surfaces — bright glass, not dark */
-  --surface-card: rgba(255, 255, 255, 0.78);
-  --surface-card-sheen: rgba(255, 255, 255, 0.55);
-  --surface-input: rgba(255, 255, 255, 0.7);
+  /* Surfaces */
+  --surface-card: rgba(255, 255, 255, 0.82);
+  --surface-card-sheen: rgba(255, 255, 255, 0.5);
+  --surface-input: rgba(255, 255, 255, 0.75);
   --surface-input-focus: #ffffff;
 
   /* Status Colors */
@@ -88,46 +101,48 @@
 
   /* Radius */
   --radius-sm: 10px;
-  --radius-lg: 26px;
+  --radius-lg: 28px;
   --radius-full: 999px;
 
-  /* Soft, light layered shadows — airy, not heavy */
+  /* Layout */
+  --panel-width: 38%;
+
+  /* Shadows — soft, airy */
   --shadow-3d-card:
-    0 1px 1px rgba(30, 27, 75, 0.02),
-    0 2px 6px rgba(30, 27, 75, 0.03),
-    0 12px 24px rgba(99, 102, 241, 0.08),
-    0 32px 64px rgba(99, 102, 241, 0.12);
+    0 1px 1px rgba(15, 47, 43, 0.02),
+    0 2px 6px rgba(15, 47, 43, 0.03),
+    0 14px 28px rgba(13, 148, 136, 0.1),
+    0 36px 70px rgba(13, 148, 136, 0.14);
 
   --shadow-3d-card-hover:
-    0 1px 1px rgba(30, 27, 75, 0.03),
-    0 6px 14px rgba(30, 27, 75, 0.05),
-    0 20px 40px rgba(99, 102, 241, 0.14),
-    0 44px 80px rgba(139, 92, 246, 0.18);
+    0 1px 1px rgba(15, 47, 43, 0.03),
+    0 6px 14px rgba(15, 47, 43, 0.05),
+    0 22px 44px rgba(13, 148, 136, 0.16),
+    0 48px 88px rgba(20, 184, 166, 0.2);
 
   --shadow-btn:
     0 1px 0 rgba(255, 255, 255, 0.3) inset,
     0 -2px 4px rgba(0, 0, 0, 0.1) inset,
-    0 8px 16px rgba(99, 102, 241, 0.28),
-    0 16px 32px rgba(139, 92, 246, 0.18);
+    0 8px 16px rgba(13, 148, 136, 0.3),
+    0 16px 32px rgba(245, 158, 11, 0.18);
 
   --shadow-btn-hover:
     0 1px 0 rgba(255, 255, 255, 0.35) inset,
     0 -2px 4px rgba(0, 0, 0, 0.12) inset,
-    0 12px 22px rgba(99, 102, 241, 0.35),
-    0 22px 44px rgba(139, 92, 246, 0.25);
+    0 12px 22px rgba(13, 148, 136, 0.38),
+    0 22px 44px rgba(245, 158, 11, 0.25);
 
   --shadow-btn-active:
     0 1px 0 rgba(255, 255, 255, 0.2) inset,
     0 2px 4px rgba(0, 0, 0, 0.15) inset,
-    0 4px 10px rgba(99, 102, 241, 0.28);
+    0 4px 10px rgba(13, 148, 136, 0.3);
 
-  --shadow-input-inset:
-    inset 0 1px 2px rgba(30, 27, 75, 0.04);
+  --shadow-input-inset: inset 0 1px 2px rgba(15, 47, 43, 0.04);
 
   --shadow-input-focus:
-    inset 0 1px 2px rgba(30, 27, 75, 0.03),
-    0 0 0 4px rgba(99, 102, 241, 0.14),
-    0 6px 14px rgba(99, 102, 241, 0.12);
+    inset 0 1px 2px rgba(15, 47, 43, 0.03),
+    0 0 0 4px rgba(13, 148, 136, 0.14),
+    0 6px 14px rgba(13, 148, 136, 0.12);
 
   /* Transitions */
   --transition-fast: 150ms ease;
@@ -189,54 +204,60 @@ body {
   align-items: center;
   justify-content: center;
   padding: var(--space-5);
-  perspective: 1400px;
+  perspective: 1600px;
 }
 
-/* Very faint dot texture for premium tactile feel */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   z-index: 0;
-  background-image: radial-gradient(rgba(99, 102, 241, 0.06) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(13, 148, 136, 0.06) 1px, transparent 1px);
   background-size: 26px 26px;
   pointer-events: none;
 }
 
-/* Soft floating pastel glow orbs */
 body::after {
   content: "";
   position: fixed;
   z-index: 0;
   pointer-events: none;
-  width: 500px;
-  height: 500px;
-  top: -16%;
-  left: -12%;
+  width: 520px;
+  height: 520px;
+  bottom: -18%;
+  right: -12%;
   border-radius: 50%;
-  filter: blur(110px);
-  opacity: 0.6;
-  background: radial-gradient(circle, #c7d2fe 0%, transparent 70%);
-  animation: float-orb-1 16s ease-in-out infinite;
+  filter: blur(120px);
+  opacity: 0.55;
+  background: radial-gradient(circle, #fde68a 0%, transparent 70%);
+  animation: float-orb-1 17s ease-in-out infinite;
 }
 
 
 /* ============================================================
-   4. AUTHENTICATION CONTAINER (light glass card, gentle 3D tilt)
+   4. AUTHENTICATION CONTAINER
+   Split-panel card: decorative brand panel (::before, left)
+   + form content (right) — a different structure from login's
+   single centered card.
    ============================================================ */
 .auth-container {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 420px;
+  max-width: 760px;
+  min-height: 520px;
+  display: block;
   background: var(--surface-card);
   backdrop-filter: blur(24px) saturate(160%);
   -webkit-backdrop-filter: blur(24px) saturate(160%);
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-3d-card);
-  padding: var(--space-7) var(--space-6);
   overflow: hidden;
+
+  /* Reserve room on the left for the decorative brand panel */
+  padding: var(--space-8) var(--space-7) var(--space-7);
+  padding-left: calc(var(--panel-width) + var(--space-7));
 
   transform-style: preserve-3d;
   transform: translateZ(0);
@@ -245,41 +266,47 @@ body::after {
 }
 
 .auth-container:hover {
-  transform: rotateX(2.5deg) rotateY(-2.5deg) translateY(-4px);
+  transform: rotateX(1.5deg) rotateY(-1.5deg) translateY(-4px);
   box-shadow: var(--shadow-3d-card-hover);
 }
 
-/* Slim, soft pastel gradient border glow (subtle, not neon) */
+/* The decorative brand panel itself */
 .auth-container::before {
-  content: "";
+  content: "Join AspireAI";
   position: absolute;
-  inset: -1.5px;
-  border-radius: calc(var(--radius-lg) + 1.5px);
-  background: var(--gradient-border);
-  opacity: 0.55;
-  filter: blur(1.5px);
-  z-index: -1;
-  animation: rotate-border 8s linear infinite;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--panel-width);
+  background: var(--gradient-panel);
+  color: rgba(255, 255, 255, 0.96);
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  display: flex;
+  align-items: flex-end;
+  padding: var(--space-7) var(--space-5);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Gentle glossy sheen sweep */
+/* Floating abstract shapes inside the brand panel for depth */
 .auth-container::after {
   content: "";
   position: absolute;
-  top: -50%;
-  left: -60%;
-  width: 60%;
-  height: 200%;
-  background: linear-gradient(
-    120deg,
-    transparent 0%,
-    var(--surface-card-sheen) 45%,
-    transparent 60%
-  );
-  transform: rotate(20deg);
-  pointer-events: none;
-  animation: sheen-sweep 6s ease-in-out infinite;
   z-index: 0;
+  top: 8%;
+  left: 6%;
+  width: calc(var(--panel-width) - 12%);
+  height: 55%;
+  background:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.28) 0%, transparent 55%),
+    radial-gradient(circle at 75% 65%, rgba(255, 255, 255, 0.2) 0%, transparent 50%);
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: panel-float 7s ease-in-out infinite;
+  pointer-events: none;
 }
 
 
@@ -289,12 +316,12 @@ body::after {
 .auth-container h2 {
   position: relative;
   z-index: 1;
-  text-align: center;
+  text-align: left;
   font-size: var(--font-size-xl);
   font-weight: 800;
   letter-spacing: -0.03em;
-  margin-bottom: var(--space-6);
-  background: linear-gradient(135deg, #4338ca 0%, #7c3aed 55%, #db2777 100%);
+  margin-bottom: var(--space-5);
+  background: linear-gradient(135deg, #0f766e 0%, #0d9488 55%, #d97706 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -309,7 +336,7 @@ body::after {
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 .auth-container form > div {
@@ -333,10 +360,11 @@ body::after {
 /* ============================================================
    8. INPUT FIELDS
    ============================================================ */
+.auth-container input[type="text"],
 .auth-container input[type="email"],
 .auth-container input[type="password"] {
   width: 100%;
-  padding: 0.8rem var(--space-4);
+  padding: 0.78rem var(--space-4);
   font-size: var(--font-size-base);
   color: var(--color-text-primary);
   background: var(--surface-input);
@@ -376,19 +404,22 @@ body::after {
   animation: input-focus-pulse 0.4s ease-out;
 }
 
-.auth-container input:invalid:not(:placeholder-shown) {
-  border-color: var(--color-error-text);
-}
+/* Note: these inputs have no `placeholder` attribute, so an
+   :invalid:not(:placeholder-shown) rule would incorrectly flag
+   every empty required field as an error on page load. If you'd
+   like red-on-error styling, add a placeholder to each input and
+   this rule can safely be reintroduced. */
 
 
 /* ============================================================
-   10. SUBMIT BUTTON (bright, glossy, professional 3D button)
+   10. SUBMIT BUTTON
+   (no id/class in markup — targeted by type + context)
    ============================================================ */
-#submitBtn {
+.auth-container form button[type="submit"] {
   position: relative;
   width: 100%;
   padding: 0.85rem var(--space-5);
-  margin-top: var(--space-1);
+  margin-top: var(--space-2);
   font-size: var(--font-size-md);
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -405,7 +436,7 @@ body::after {
     background-position var(--transition-slow);
 }
 
-#submitBtn::before {
+.auth-container form button[type="submit"]::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -419,7 +450,7 @@ body::after {
   transition: transform var(--transition-slow);
 }
 
-#submitBtn::after {
+.auth-container form button[type="submit"]::after {
   content: "";
   position: absolute;
   top: -60%;
@@ -430,27 +461,27 @@ body::after {
   pointer-events: none;
 }
 
-#submitBtn:hover {
+.auth-container form button[type="submit"]:hover {
   background-position: 100% 50%;
   box-shadow: var(--shadow-btn-hover);
   transform: translateY(-3px) scale(1.015);
 }
 
-#submitBtn:hover::before {
+.auth-container form button[type="submit"]:hover::before {
   transform: translateX(120%);
 }
 
-#submitBtn:active {
+.auth-container form button[type="submit"]:active {
   transform: translateY(1px) scale(0.98);
   box-shadow: var(--shadow-btn-active);
 }
 
-#submitBtn:focus-visible {
+.auth-container form button[type="submit"]:focus-visible {
   outline: 2px solid var(--color-primary-dark);
   outline-offset: 3px;
 }
 
-#submitBtn:disabled {
+.auth-container form button[type="submit"]:disabled {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
@@ -460,9 +491,12 @@ body::after {
 
 /* ============================================================
    11. FLASH MESSAGES
-   (overrides the inline style="color:red; margin-bottom:10px;")
+   Flash items are bare <p style="color:red"> tags that appear
+   BEFORE the form. The footer "Log In" paragraph appears AFTER
+   the form, so it's targeted separately in section 12 with a
+   more specific selector to avoid picking up this styling.
    ============================================================ */
-.flash-message {
+.auth-container > p {
   position: relative;
   z-index: 1;
   display: block;
@@ -473,32 +507,38 @@ body::after {
   color: var(--color-error-text) !important;
   font-size: var(--font-size-sm);
   font-weight: 600;
-  margin-bottom: var(--space-5) !important;
+  margin-bottom: var(--space-4);
   box-shadow: 0 3px 10px rgba(220, 38, 38, 0.06);
   animation: flash-slide-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 
 /* ============================================================
-   12. LINKS (footer paragraph + Sign Up link)
+   12. LINKS (footer paragraph + Log In link)
+   This more specific selector (adjacent-sibling of the form)
+   overrides the flash styling above for the footer text.
    ============================================================ */
-.auth-container p {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  margin-top: var(--space-6);
+.auth-container > form + p {
+  text-align: left;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  margin-top: var(--space-5);
+  margin-bottom: 0;
   font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
+  color: var(--color-text-secondary) !important;
+  animation: none;
 }
 
-.auth-container p a {
+.auth-container > form + p a {
   position: relative;
   color: var(--color-primary);
   font-weight: 700;
   transition: color var(--transition-fast);
 }
 
-.auth-container p a::after {
+.auth-container > form + p a::after {
   content: "";
   position: absolute;
   left: 0;
@@ -512,11 +552,11 @@ body::after {
   transition: transform var(--transition-base);
 }
 
-.auth-container p a:hover {
+.auth-container > form + p a:hover {
   color: var(--color-primary-dark);
 }
 
-.auth-container p a:hover::after {
+.auth-container > form + p a:hover::after {
   transform: scaleX(1);
   transform-origin: left;
 }
@@ -524,36 +564,83 @@ body::after {
 
 /* ============================================================
    13. RESPONSIVE DESIGN (Mobile-first)
+   Panel collapses from a side column into a top banner strip
+   on narrower screens.
    ============================================================ */
-@media (min-width: 400px) {
-  .auth-container {
-    padding: var(--space-7) var(--space-7);
-  }
+.auth-container {
+  max-width: 92vw;
 }
 
-@media (min-width: 640px) {
-  body {
-    padding: var(--space-6);
+@media (min-width: 460px) {
+  .auth-container {
+    max-width: 420px;
+    padding-left: var(--space-6);
+    padding-right: var(--space-6);
+    padding-top: var(--space-8);
+    padding-bottom: var(--space-7);
+    min-height: 0;
   }
 
-  .auth-container {
-    max-width: 440px;
-    padding: var(--space-8) var(--space-7);
+  /* Panel becomes a decorative top banner instead of a side rail */
+  .auth-container::before {
+    width: 100%;
+    height: 120px;
+    top: 0;
+    left: 0;
+    bottom: auto;
+    align-items: center;
+    justify-content: flex-start;
+    padding: var(--space-5) var(--space-6);
+    font-size: 1.35rem;
+  }
+
+  .auth-container::after {
+    width: 45%;
+    height: 100px;
+    top: 10px;
+    left: 50%;
+  }
+
+  .auth-container h2,
+  .auth-container > p,
+  .auth-container form,
+  .auth-container > form + p {
+    margin-top: 0;
   }
 
   .auth-container h2 {
+    margin-top: 140px;
+  }
+}
+
+@media (min-width: 860px) {
+  .auth-container {
+    max-width: 760px;
+    min-height: 520px;
+    padding: var(--space-8) var(--space-7) var(--space-7);
+    padding-left: calc(var(--panel-width) + var(--space-7));
+  }
+
+  .auth-container::before {
+    width: var(--panel-width);
+    height: 100%;
+    top: 0;
+    bottom: 0;
+    align-items: flex-end;
+    padding: var(--space-7) var(--space-5);
+    font-size: 1.6rem;
+  }
+
+  .auth-container::after {
+    width: calc(var(--panel-width) - 12%);
+    height: 55%;
+    top: 8%;
+    left: 6%;
+  }
+
+  .auth-container h2 {
+    margin-top: 0;
     font-size: 2.05rem;
-  }
-}
-
-@media (max-width: 380px) {
-  .auth-container {
-    padding: var(--space-5) var(--space-4);
-    border-radius: 18px;
-  }
-
-  .auth-container h2 {
-    font-size: 1.25rem;
   }
 }
 
@@ -599,16 +686,10 @@ body::after {
   inherits: false;
 }
 
-@keyframes rotate-border {
-  to {
-    --angle: 360deg;
-  }
-}
-
 @keyframes card-enter-3d {
   from {
     opacity: 0;
-    transform: rotateX(14deg) translateY(40px) scale(0.95);
+    transform: rotateX(10deg) translateY(40px) scale(0.96);
   }
   to {
     opacity: 1;
@@ -616,13 +697,13 @@ body::after {
   }
 }
 
-@keyframes sheen-sweep {
+@keyframes panel-float {
   0%,
   100% {
-    transform: rotate(20deg) translateX(-40%);
+    transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: rotate(20deg) translateX(40%);
+    transform: translate(6%, 4%) scale(1.06);
   }
 }
 
@@ -639,7 +720,7 @@ body::after {
 
 @keyframes input-focus-pulse {
   from {
-    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.35);
+    box-shadow: 0 0 0 0 rgba(13, 148, 136, 0.35);
   }
   to {
     box-shadow: var(--shadow-input-focus);
@@ -652,6 +733,6 @@ body::after {
     transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(30px, 40px) scale(1.08);
+    transform: translate(-30px, -35px) scale(1.08);
   }
 }
