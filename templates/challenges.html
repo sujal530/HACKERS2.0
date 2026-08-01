@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Challenges | AspireAI</title>
+
+    <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/challenges.css') }}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Sidebar -->
+
+        <aside class="sidebar">
+
+            <h2>AspireAI</h2>
+
+            <a href="{{ url_for('dashboard.dashboard') }}">
+                Dashboard
+            </a>
+
+            <a href="{{ url_for('roadmap.view_roadmap') }}">
+                Roadmap
+            </a>
+
+            <a href="{{ url_for('mentor.mentor') }}">
+                AI Mentor
+            </a>
+
+            <a class="active"
+                href="{{ url_for('challenges.challenges') }}">
+                Challenges
+            </a>
+
+            <a href="{{ url_for('profile.view_profile') }}">
+                Profile
+            </a>
+
+            <a href="{{ url_for('auth.logout') }}">
+                Logout
+            </a>
+
+        </aside>
+
+
+        <!-- Main Content -->
+
+        <main class="content">
+
+            <div class="page-header">
+
+                <h1>🔥 Coding Challenges</h1>
+
+                <p>
+                    Solve challenges, earn XP and improve your skills.
+                </p>
+
+            </div>
+
+            {% if challenges %}
+
+                {% for challenge in challenges %}
+
+                <div class="challenge-card">
+
+                    <div class="top">
+
+                        <h2>{{ challenge.title }}</h2>
+
+                        <span class="difficulty">
+
+                            {{ challenge.difficulty }}
+
+                        </span>
+
+                    </div>
+
+                    <div class="category">
+
+                        {{ challenge.category }}
+
+                    </div>
+
+                    <p class="description">
+
+                        {{ challenge.description }}
+
+                    </p>
+
+                    <div class="reward">
+
+                        ⭐ XP Reward:
+                        <strong>{{ challenge.xp }}</strong>
+
+                    </div>
+
+                    <textarea
+
+                        class="answer"
+
+                        rows="10"
+
+                        placeholder="Write your solution here..."></textarea>
+
+                    <button
+
+                        class="submit-btn"
+
+                        data-id="{{ challenge.id }}">
+
+                        Submit Solution
+
+                    </button>
+
+                    <div
+
+                        class="feedback"
+
+                        id="feedback{{ challenge.id }}">
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <div class="challenge-card">
+
+                    <h2>No Challenges Available</h2>
+
+                </div>
+
+            {% endif %}
+
+        </main>
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/challenges.js') }}"></script>
+
+</body>
+
+</html>

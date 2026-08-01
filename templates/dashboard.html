@@ -20,7 +20,11 @@
             <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
             <li><a href="{{ url_for('roadmap.view_roadmap') }}">Roadmap</a></li>
            <li><a href="#">Resources</a></li>
-            <li><a href="#">Challenges</a></li>
+            <li>
+    <a href="{{ url_for('challenges.challenges') }}">
+        Challenges
+    </a>
+</li>
             <li><a href="{{ url_for('mentor.mentor') }}">AI Mentor</a></li>
             <li><a href="{{ url_for('auth.logout') }}" class="btn-logout">Logout</a></li>
         </ul>
