@@ -19,9 +19,9 @@
             <li><a href="{{ url_for('dashboard.dashboard') }}" class="active">Dashboard</a></li>
             <li><a href="{{ url_for('profile.view_profile') }}">Profile</a></li>
             <li><a href="{{ url_for('roadmap.view_roadmap') }}">Roadmap</a></li>
-            <li><a href="{{ url_for('resources.resources') if 'resources' in config.get('BLUEPRINTS', {}) else '#' }}">Resources</a></li>
-            <li><a href="{{ url_for('challenge.challenge') if 'challenge' in config.get('BLUEPRINTS', {}) else '#' }}">Challenges</a></li>
-            <li><a href="{{ url_for('mentor.mentor') if 'mentor' in config.get('BLUEPRINTS', {}) else '#' }}">AI Mentor</a></li>
+           <li><a href="#">Resources</a></li>
+            <li><a href="#">Challenges</a></li>
+            <li><a href="{{ url_for('mentor.mentor') }}">AI Mentor</a></li>
             <li><a href="{{ url_for('auth.logout') }}" class="btn-logout">Logout</a></li>
         </ul>
     </nav>

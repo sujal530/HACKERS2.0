@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AspireAI Mentor</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/mentor.css') }}">
+
+<link rel="preconnect"
+href="https://fonts.googleapis.com">
+
+<link rel="preconnect"
+href="https://fonts.gstatic.com"
+crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- Sidebar -->
+
+    <aside class="sidebar">
+
+        <div class="logo">
+
+            🤖 AspireAI
+
+        </div>
+
+        <button id="newChat">
+
+            + New Chat
+
+        </button>
+
+        <div class="history">
+
+            <h3>Chats</h3>
+
+            <div class="chat-item active">
+
+                AI Mentor
+
+            </div>
+
+        </div>
+
+        <a
+        class="back-btn"
+        href="{{ url_for('dashboard.dashboard') }}">
+
+            ← Dashboard
+
+        </a>
+
+    </aside>
+
+
+    <!-- Main Chat -->
+
+    <main class="chat-container">
+
+        <header class="chat-header">
+
+            <h2>
+
+                AspireAI Mentor
+
+            </h2>
+
+            <p>
+
+                Powered by Gemini 3.5 Flash
+
+            </p>
+
+        </header>
+
+
+        <div id="chatBox"
+        class="chat-box">
+
+            <div class="message ai">
+
+                <div class="avatar">
+
+                    🤖
+
+                </div>
+
+                <div class="bubble">
+
+                    Hello
+                    <b>{{ session.get("user_name","Student") }}</b>
+                    👋
+
+                    <br><br>
+
+                    I'm your AI Growth Mentor.
+
+                    Ask me anything about
+
+                    Programming,
+                    Career,
+                    DSA,
+                    AI,
+                    Flask,
+                    Python,
+                    Projects
+                    or
+                    Interview Preparation.
+
+                </div>
+
+            </div>
+
+        </div>
+
+                <div class="input-area">
+
+            <textarea
+                id="question"
+                placeholder="Ask AspireAI anything..."
+                rows="1"></textarea>
+
+            <button id="sendBtn">
+
+                ➤
+
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/mentor.js') }}"></script>
+
+</body>
+
+</html>
