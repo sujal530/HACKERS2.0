@@ -1,0 +1,405 @@
+/* =====================================================
+   AspireAI — GLOBAL STYLESHEET
+   Theme: IABTM-inspired — charcoal & paper, vintage-magazine
+   collage energy, bold editorial type, handwritten accents.
+   Loaded on every page BEFORE the page-specific stylesheet.
+   ===================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&family=Caveat:wght@500;600;700&display=swap');
+
+/* -----------------------------------------------------
+   DESIGN TOKENS
+   ----------------------------------------------------- */
+:root {
+  /* Core palette */
+  --ink: #141414;              /* primary background — near-black */
+  --charcoal: #2b2b2b;         /* surface / panels (IABTM brand tone) */
+  --charcoal-light: #3a3a3a;   /* raised surface / hover */
+  --paper: #f5f1e8;            /* warm cream — "magazine page" surface */
+  --paper-dim: #ece6d8;        /* cream, slightly recessed */
+  --bone: #ede9df;             /* light text on dark surfaces */
+  --smoke: #9a958c;            /* muted / secondary text */
+  --line: #454545;             /* hairline borders on dark */
+  --line-light: #ddd6c4;       /* hairline borders on paper */
+
+  /* Accents */
+  --ember: #ff5a1f;            /* primary accent — CTAs, highlights */
+  --ember-dark: #d94512;
+  --gold: #d4a94f;             /* secondary accent — badges, dividers */
+  --olive: #6b7353;            /* tertiary accent — success / progress */
+  --danger: #e14b4b;
+
+  /* Type */
+  --font-display: 'Anton', 'Arial Narrow', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-accent: 'Caveat', cursive;
+
+  /* Scale */
+  --radius: 2px;               /* mostly sharp — editorial, not soft-app */
+  --shadow-sticker: 5px 5px 0 var(--ink);
+  --shadow-sticker-sm: 3px 3px 0 var(--ink);
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.35);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+  --space-6: 64px;
+
+  --container-max: 1180px;
+}
+
+/* -----------------------------------------------------
+   RESET
+   ----------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+button, input, select, textarea { font-family: inherit; font-size: inherit; color: inherit; }
+
+ul, ol { list-style: none; margin: 0; padding: 0; }
+
+h1, h2, h3, h4, h5, h6 { margin: 0; font-family: var(--font-display); font-weight: 400; letter-spacing: 0.01em; text-transform: uppercase; }
+
+p { margin: 0 0 var(--space-3); }
+
+/* -----------------------------------------------------
+   TYPE SCALE
+   ----------------------------------------------------- */
+h1 { font-size: clamp(2.4rem, 5vw, 4rem); line-height: 0.98; }
+h2 { font-size: clamp(1.8rem, 3.2vw, 2.6rem); line-height: 1.02; }
+h3 { font-size: 1.4rem; line-height: 1.1; }
+h4 { font-size: 1.1rem; line-height: 1.2; }
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ember);
+}
+
+.accent-script {
+  font-family: var(--font-accent);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.text-muted { color: var(--smoke); }
+
+/* -----------------------------------------------------
+   LAYOUT
+   ----------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-4);
+}
+
+.surface-paper { background: var(--paper); color: var(--ink); }
+.surface-charcoal { background: var(--charcoal); color: var(--bone); }
+
+/* -----------------------------------------------------
+   NAVBAR
+   ----------------------------------------------------- */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--ink);
+  border-bottom: 2px solid var(--charcoal-light);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-1);
+}
+
+.nav-logo span { color: var(--ember); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.nav-links a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--smoke);
+  transition: color 0.15s ease;
+  position: relative;
+}
+
+.nav-links a:hover,
+.nav-links a.active { color: var(--bone); }
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -6px;
+  width: 100%; height: 2px;
+  background: var(--ember);
+}
+
+.nav-user {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.nav-user .avatar-chip {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--charcoal-light);
+  border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+}
+
+/* -----------------------------------------------------
+   BUTTONS
+   ----------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 13px 28px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 2px solid var(--ink);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.15s ease;
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: var(--shadow-sticker-sm);
+}
+
+.btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--ink); }
+.btn:active { transform: translate(0, 0); box-shadow: 1px 1px 0 var(--ink); }
+
+.btn-primary { background: var(--ember); border-color: var(--ink); color: var(--ink); }
+.btn-primary:hover { background: var(--ember-dark); }
+
+.btn-secondary { background: var(--charcoal); color: var(--bone); border-color: var(--gold); box-shadow: 5px 5px 0 var(--gold); }
+.btn-secondary:hover { box-shadow: 6px 6px 0 var(--gold); }
+
+.btn-outline { background: transparent; color: inherit; border-color: currentColor; box-shadow: none; }
+.btn-outline:hover { background: rgba(255, 255, 255, 0.06); transform: none; }
+
+.btn-block { width: 100%; }
+.btn-sm { padding: 8px 16px; font-size: 0.72rem; }
+
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: var(--shadow-sticker-sm); }
+
+/* -----------------------------------------------------
+   FORMS
+   ----------------------------------------------------- */
+.field { margin-bottom: var(--space-4); }
+
+.field label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+  color: var(--smoke);
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="password"],
+.field input[type="number"],
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 13px 16px;
+  background: var(--charcoal);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--bone);
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.field input::placeholder, .field textarea::placeholder { color: #6b6a66; }
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--ember);
+  background: #313131;
+}
+
+.field textarea { resize: vertical; min-height: 110px; }
+
+.field-error { color: var(--danger); font-size: 0.78rem; margin-top: var(--space-1); }
+.field-hint { color: var(--smoke); font-size: 0.78rem; margin-top: var(--space-1); }
+
+.checkbox-row { display: flex; align-items: center; gap: var(--space-2); font-size: 0.85rem; }
+
+/* -----------------------------------------------------
+   CARDS — signature clipped-corner "torn magazine" motif
+   ----------------------------------------------------- */
+.card {
+  background: var(--charcoal);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: var(--space-4);
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+  position: relative;
+}
+
+.card-paper {
+  background: var(--paper);
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.card-lift { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.card-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-soft); }
+
+/* -----------------------------------------------------
+   TAGS / BADGES
+   ----------------------------------------------------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: 1.5px solid currentColor;
+}
+
+.tag-ember { color: var(--ember); }
+.tag-gold { color: var(--gold); }
+.tag-olive { color: var(--olive); }
+.tag-smoke { color: var(--smoke); }
+
+.badge-sticker {
+  font-family: var(--font-accent);
+  font-size: 1.05rem;
+  color: var(--ink);
+  background: var(--gold);
+  padding: 2px 14px;
+  border-radius: var(--radius);
+  transform: rotate(-3deg);
+  display: inline-block;
+  box-shadow: var(--shadow-sticker-sm);
+}
+
+/* -----------------------------------------------------
+   PROGRESS
+   ----------------------------------------------------- */
+.progress-track {
+  width: 100%;
+  height: 10px;
+  background: var(--charcoal-light);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--ember), var(--gold));
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* -----------------------------------------------------
+   FOOTER
+   ----------------------------------------------------- */
+.site-footer {
+  border-top: 2px solid var(--charcoal-light);
+  padding: var(--space-5) var(--space-4);
+  text-align: center;
+  color: var(--smoke);
+  font-size: 0.8rem;
+}
+
+/* -----------------------------------------------------
+   UTILITIES
+   ----------------------------------------------------- */
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.items-center { align-items: center; }
+.justify-between { justify-content: space-between; }
+.gap-1 { gap: var(--space-1); }
+.gap-2 { gap: var(--space-2); }
+.gap-3 { gap: var(--space-3); }
+.gap-4 { gap: var(--space-4); }
+.mt-1 { margin-top: var(--space-1); }
+.mt-2 { margin-top: var(--space-2); }
+.mt-3 { margin-top: var(--space-3); }
+.mt-4 { margin-top: var(--space-4); }
+.mb-1 { margin-bottom: var(--space-1); }
+.mb-2 { margin-bottom: var(--space-2); }
+.mb-3 { margin-bottom: var(--space-3); }
+.mb-4 { margin-bottom: var(--space-4); }
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-in-up { animation: fadeInUp 0.5s ease both; }
+
+::selection { background: var(--ember); color: var(--ink); }
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb { background: var(--charcoal-light); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+:focus-visible { outline: 2px solid var(--ember); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* -----------------------------------------------------
+   RESPONSIVE
+   ----------------------------------------------------- */
+@media (max-width: 860px) {
+  .nav-links { display: none; }
+  .container { padding: 0 var(--space-3); }
+}

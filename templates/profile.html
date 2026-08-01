@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - AspireAI</title>
+    <!-- CSS Dependencies -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+
+    <!-- Main Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="{{ url_for('dashboard') }}">AspireAI</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+            <li><a href="{{ url_for('profile') }}" class="active">Profile</a></li>
+            <li><a href="{{ url_for('roadmap') }}">Roadmap</a></li>
+            <li><a href="{{ url_for('resources') }}">Resources</a></li>
+            <li><a href="{{ url_for('challenge') }}">Challenges</a></li>
+            <li><a href="{{ url_for('mentor') }}">AI Mentor</a></li>
+            <li><a href="{{ url_for('logout') }}" class="btn-logout">Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="profile-container">
+        
+        <header class="profile-header">
+            <h1>Your Growth Profile</h1>
+            <p>Define your aspirations, learning style, and available time to help AspireAI tailor your path.</p>
+        </header>
+
+        <!-- Flash messages display -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="profile-card">
+            <form action="{{ url_for('profile') }}" method="POST" id="profileForm">
+                
+                <!-- Career Goal -->
+                <div class="form-group">
+                    <label for="career_goal">Career Goal / Primary Aspiration</label>
+                    <input 
+                        type="text" 
+                        id="career_goal" 
+                        name="career_goal" 
+                        placeholder="e.g., Full Stack Engineer, AI Research Scientist, Product Manager"
+                        value="{{ profile_data.get('career_goal', '') if profile_data else '' }}"
+                        required
+                    >
+                </div>
+
+                <!-- Skill Level -->
+                <div class="form-group">
+                    <label for="skill_level">Current Skill Level</label>
+                    <select id="skill_level" name="skill_level" required>
+                        <option value="" disabled {% if not profile_data or not profile_data.get('skill_level') %}selected{% endif %}>Select your current level</option>
+                        <option value="Beginner" {% if profile_data and profile_data.get('skill_level') == 'Beginner' %}selected{% endif %}>Beginner</option>
+                        <option value="Intermediate" {% if profile_data and profile_data.get('skill_level') == 'Intermediate' %}selected{% endif %}>Intermediate</option>
+                        <option value="Advanced" {% if profile_data and profile_data.get('skill_level') == 'Advanced' %}selected{% endif %}>Advanced</option>
+                    </select>
+                </div>
+
+                <!-- Interests -->
+                <div class="form-group">
+                    <label for="interests">Interests (Comma Separated)</label>
+                    <input 
+                        type="text" 
+                        id="interests" 
+                        name="interests" 
+                        placeholder="e.g., Python, Machine Learning, Web Development, UI/UX"
+                        value="{{ profile_data.get('interests', '') if profile_data else '' }}"
+                        required
+                    >
+                </div>
+
+                <!-- Daily Available Time -->
+                <div class="form-group">
+                    <label for="daily_available_time">Daily Available Time (Hours)</label>
+                    <input 
+                        type="number" 
+                        id="daily_available_time" 
+                        name="daily_available_time" 
+                        min="0.5" 
+                        max="24" 
+                        step="0.5"
+                        placeholder="e.g., 2"
+                        value="{{ profile_data.get('daily_available_time', '') if profile_data else '' }}"
+                        required
+                    >
+                </div>
+
+                <!-- Learning Style -->
+                <div class="form-group">
+                    <label for="learning_style">Preferred Learning Style</label>
+                    <select id="learning_style" name="learning_style" required>
+                        <option value="" disabled {% if not profile_data or not profile_data.get('learning_style') %}selected{% endif %}>Select learning preference</option>
+                        <option value="Visual (Videos/Diagrams)" {% if profile_data and profile_data.get('learning_style') == 'Visual (Videos/Diagrams)' %}selected{% endif %}>Visual (Videos/Diagrams)</option>
+                        <option value="Reading (Docs/Books)" {% if profile_data and profile_data.get('learning_style') == 'Reading (Docs/Books)' %}selected{% endif %}>Reading (Docs/Books)</option>
+                        <option value="Hands-on (Projects/Code)" {% if profile_data and profile_data.get('learning_style') == 'Hands-on (Projects/Code)' %}selected{% endif %}>Hands-on (Projects/Code)</option>
+                        <option value="Mixed" {% if profile_data and profile_data.get('learning_style') == 'Mixed' %}selected{% endif %}>Mixed Strategy</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-primary btn-block">Save Growth Profile</button>
+            </form>
+        </div>
+
+    </main>
+
+    <!-- JS Dependencies -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+</body>
+</html>
