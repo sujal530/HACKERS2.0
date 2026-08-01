@@ -1,187 +1,43 @@
 /* =====================================================
-   AspireAI — PROFILE (profile.html)
-   Growth-profile intake form: aspiration, skill level,
-   interests, learning style, available time.
-   Depends on tokens/reset from style.css.
-   ===================================================== */
+   AspireAI — Growth Profile
+===================================================== */
 
-.profile-shell {
-  padding: var(--space-5) 0 var(--space-6);
+.profile-container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.75rem 2.5rem 4rem;
 }
 
-.profile-header {
-  margin-bottom: var(--space-5);
+.profile-header { margin-bottom: 2rem; }
+
+.profile-header h1 { font-size: 1.85rem; margin-bottom: 0.4rem; letter-spacing: -0.01em; }
+
+.profile-header p { color: var(--text-soft); margin: 0; max-width: 52ch; }
+
+.profile-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2rem;
+  box-shadow: var(--shadow-sm);
 }
 
-.profile-header .eyebrow { margin-bottom: var(--space-2); }
-.profile-header p { color: var(--smoke); max-width: 560px; }
+.form-group { margin-bottom: 1.4rem; }
+.form-group:last-of-type { margin-bottom: 1.8rem; }
+.form-group label { margin-bottom: 0.4rem; }
 
-.profile-layout {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: var(--space-4);
-  align-items: start;
-}
-
-/* ---------- Avatar block ---------- */
-.avatar-upload {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-5);
-}
-
-.avatar-upload .avatar-preview {
-  width: 76px; height: 76px;
-  border-radius: 50%;
-  background: var(--charcoal-light);
-  border: 3px solid var(--gold);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  color: var(--gold);
-  flex-shrink: 0;
-}
-
-.avatar-upload .avatar-meta strong { display: block; font-family: var(--font-display); font-size: 1.1rem; }
-.avatar-upload .avatar-meta span { color: var(--smoke); font-size: 0.82rem; }
-
-/* ---------- Skill level chips ---------- */
-.skill-level-group {
-  display: flex;
-  gap: var(--space-2);
-  flex-wrap: wrap;
-}
-
-.skill-chip {
-  padding: 10px 20px;
-  border: 2px solid var(--line);
-  border-radius: 999px;
-  font-size: 0.82rem;
-  font-weight: 600;
+.form-group select {
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-soft) 50%),
+    linear-gradient(135deg, var(--text-soft) 50%, transparent 50%);
+  background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
   cursor: pointer;
-  transition: border-color 0.15s ease, background 0.15s ease, color 0.15s ease;
-  background: var(--charcoal);
-  color: var(--smoke);
 }
 
-.skill-chip input { display: none; }
-
-.skill-chip:hover { border-color: var(--gold); }
-
-.skill-chip.selected,
-.skill-chip:has(input:checked) {
-  background: var(--ember);
-  border-color: var(--ink);
-  color: var(--ink);
-}
-
-/* ---------- Interest tags (multi-select) ---------- */
-.interest-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-}
-
-.interest-tag {
-  padding: 8px 16px;
-  border-radius: var(--radius);
-  border: 1.5px dashed var(--line);
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--smoke);
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.interest-tag input { display: none; }
-
-.interest-tag:has(input:checked) {
-  border-style: solid;
-  border-color: var(--gold);
-  color: var(--gold);
-  background: rgba(212, 169, 79, 0.08);
-}
-
-/* ---------- Learning style radio cards ---------- */
-.learning-style-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-3);
-}
-
-.style-card {
-  border: 2px solid var(--line);
-  border-radius: var(--radius);
-  padding: var(--space-3);
-  cursor: pointer;
-  transition: border-color 0.15s ease, transform 0.15s ease;
-}
-
-.style-card input { display: none; }
-
-.style-card .style-icon { font-size: 1.4rem; margin-bottom: var(--space-2); }
-.style-card .style-name { font-weight: 700; font-size: 0.88rem; margin-bottom: 2px; }
-.style-card .style-desc { font-size: 0.76rem; color: var(--smoke); }
-
-.style-card:has(input:checked) {
-  border-color: var(--ember);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-sticker-sm);
-}
-
-/* ---------- Available time slider ---------- */
-.time-slider-row {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-}
-
-.time-slider-row input[type="range"] {
-  flex: 1;
-  accent-color: var(--ember);
-  height: 4px;
-}
-
-.time-slider-value {
-  font-family: var(--font-display);
-  font-size: 1.1rem;
-  color: var(--ember);
-  min-width: 64px;
-  text-align: right;
-}
-
-/* ---------- Sidebar: profile summary card ---------- */
-.profile-summary-card {
-  background: var(--charcoal);
-  border: 2px solid var(--gold);
-  border-radius: var(--radius);
-  padding: var(--space-4);
-  position: sticky;
-  top: 90px;
-}
-
-.profile-summary-card .accent-script {
-  color: var(--gold);
-  font-size: 1.3rem;
-  display: block;
-  margin-bottom: var(--space-2);
-}
-
-.summary-row {
-  display: flex;
-  justify-content: space-between;
-  padding: var(--space-2) 0;
-  border-bottom: 1px solid var(--line);
-  font-size: 0.82rem;
-}
-.summary-row:last-child { border-bottom: none; }
-.summary-row .summary-key { color: var(--smoke); }
-.summary-row .summary-val { font-weight: 700; text-transform: capitalize; }
-
-/* ---------- Responsive ---------- */
-@media (max-width: 960px) {
-  .profile-layout { grid-template-columns: 1fr; }
-  .learning-style-grid { grid-template-columns: 1fr; }
-  .profile-summary-card { position: static; }
+@media (max-width: 600px) {
+  .profile-container { padding: 2rem 1.25rem 3rem; }
+  .profile-card { padding: 1.75rem 1.4rem; }
 }
